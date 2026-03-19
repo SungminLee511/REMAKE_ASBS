@@ -25,6 +25,7 @@ from asbs.priors.harmonic import HarmonicPrior
 from asbs.energies.gaussian_mixture import GaussianMixture2D
 from asbs.energies.double_well import DoubleWellEnergy
 from asbs.energies.lennard_jones import LennardJonesEnergy
+from asbs.energies.many_well import ManyWellEnergy
 from asbs.models.egnn import EGNN, CorrectorEGNN
 from asbs.training.trainer import ASBSTrainer
 
@@ -131,6 +132,25 @@ CONFIGS = {
         buffer_max_size=10000,
         seed=0,
     ),
+    "mw5_asbs": dict(
+        energy="many_well",
+        prior="gaussian",
+        prior_std=1.0,
+        model="mlp",
+        x_dim=5,
+        hidden_dim=128,
+        n_layers=4,
+        sigma_min=0.01,
+        sigma_max=1.0,
+        n_sde_steps=100,
+        n_stages=10,
+        am_steps=5000,
+        cm_steps=2000,
+        batch_size=256,
+        lr=1e-3,
+        buffer_max_size=10000,
+        seed=0,
+    ),
     "lj55_asbs": dict(
         energy="lennard_jones",
         prior="harmonic",
@@ -160,6 +180,8 @@ def build_energy(cfg, device):
         return GaussianMixture2D(device=device)
     elif name == "double_well":
         return DoubleWellEnergy(device=device)
+    elif name == "many_well":
+        return ManyWellEnergy(device=device)
     elif name == "lennard_jones":
         n = cfg.get("n_particles", 13)
         return LennardJonesEnergy(n_particles=n, device=device)
