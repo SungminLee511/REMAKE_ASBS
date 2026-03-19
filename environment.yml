@@ -1,0 +1,17 @@
+name: asbs
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch>=2.1
+  - pytorch-cuda=12.1
+  - numpy
+  - scipy
+  - matplotlib
+  - seaborn
+  - tqdm
+  - pip:
+    - pot
+    - ase
